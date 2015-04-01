@@ -1,7 +1,7 @@
 208: Culling Numbers (Easy)
 ===========================
 
-*My solution:* https://www.reddit.com/r/dailyprogrammer/comments/30ubcl/20150330_challenge_208_easy_culling_numbers/cpycok5
+https://www.reddit.com/r/dailyprogrammer/comments/30ubcl/20150330_challenge_208_easy_culling_numbers/cpycok5
 
 ##Description:
 
