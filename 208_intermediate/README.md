@@ -55,7 +55,7 @@ The grid follows **screen space**, so the **top-left** corner is position **(0, 
 
 Next, you will accept the characters that make up the gradient 'colours', from start to finish (or from inside to outside, for a radial gradient), like this: (note the space at the start)
 
-     .,:;xX&amp;@
+     .,:;xX&@
 
 Any points outside the gradient will have the first/last character, depending on which side of the gradient they're on.
 
@@ -73,36 +73,36 @@ After this, you will accept the parameters of the gradient. This may take one of
 
 You are to display the given gradient on a grid with the given size, like this:
 
-    @@@@@@@@@@@&amp;&amp;&amp;&amp;&amp;XXXXXXXXX&amp;&amp;&amp;&amp;&amp;@@@@@@@@@@
-    @@@@@@@@@@&amp;&amp;&amp;&amp;XXXXXXXXXXXXX&amp;&amp;&amp;&amp;@@@@@@@@@
-    @@@@@@@@&amp;&amp;&amp;&amp;XXXXXXxxxxxXXXXXX&amp;&amp;&amp;&amp;@@@@@@@
-    @@@@@@@&amp;&amp;&amp;&amp;XXXXxxxxxxxxxxxXXXX&amp;&amp;&amp;&amp;@@@@@@
-    @@@@@@@&amp;&amp;&amp;XXXxxxxxx;;;xxxxxxXXX&amp;&amp;&amp;@@@@@@
-    @@@@@@&amp;&amp;&amp;XXXxxxx;;;;;;;;;xxxxXXX&amp;&amp;&amp;@@@@@
-    @@@@@&amp;&amp;&amp;XXXxxx;;;;;;;;;;;;;xxxXXX&amp;&amp;&amp;@@@@
-    @@@@@&amp;&amp;XXXxxx;;;;:::::::;;;;xxxXXX&amp;&amp;@@@@
-    @@@@&amp;&amp;&amp;XXxxx;;;:::::::::::;;;xxxXX&amp;&amp;&amp;@@@
-    @@@@&amp;&amp;XXXxx;;;::::,,,,,::::;;;xxXXX&amp;&amp;@@@
-    @@@&amp;&amp;&amp;XXxxx;;:::,,,,,,,,,:::;;xxxXX&amp;&amp;&amp;@@
-    @@@&amp;&amp;XXXxx;;;::,,,,...,,,,::;;;xxXXX&amp;&amp;@@
-    @@@&amp;&amp;XXXxx;;:::,,.......,,:::;;xxXXX&amp;&amp;@@
-    @@@&amp;&amp;XXxxx;;::,,,... ...,,,::;;xxxXX&amp;&amp;@@
-    @@@&amp;&amp;XXxx;;;::,,...   ...,,::;;;xxXX&amp;&amp;@@
-    @@@&amp;&amp;XXxx;;;::,,..     ..,,::;;;xxXX&amp;&amp;@@
-    @@@&amp;&amp;XXxx;;;::,,...   ...,,::;;;xxXX&amp;&amp;@@
-    @@@&amp;&amp;XXxxx;;::,,,... ...,,,::;;xxxXX&amp;&amp;@@
-    @@@&amp;&amp;XXXxx;;:::,,.......,,:::;;xxXXX&amp;&amp;@@
-    @@@&amp;&amp;XXXxx;;;::,,,,...,,,,::;;;xxXXX&amp;&amp;@@
-    @@@&amp;&amp;&amp;XXxxx;;:::,,,,,,,,,:::;;xxxXX&amp;&amp;&amp;@@
-    @@@@&amp;&amp;XXXxx;;;::::,,,,,::::;;;xxXXX&amp;&amp;@@@
-    @@@@&amp;&amp;&amp;XXxxx;;;:::::::::::;;;xxxXX&amp;&amp;&amp;@@@
-    @@@@@&amp;&amp;XXXxxx;;;;:::::::;;;;xxxXXX&amp;&amp;@@@@
-    @@@@@&amp;&amp;&amp;XXXxxx;;;;;;;;;;;;;xxxXXX&amp;&amp;&amp;@@@@
-    @@@@@@&amp;&amp;&amp;XXXxxxx;;;;;;;;;xxxxXXX&amp;&amp;&amp;@@@@@
-    @@@@@@@&amp;&amp;&amp;XXXxxxxxx;;;xxxxxxXXX&amp;&amp;&amp;@@@@@@
-    @@@@@@@&amp;&amp;&amp;&amp;XXXXxxxxxxxxxxxXXXX&amp;&amp;&amp;&amp;@@@@@@
-    @@@@@@@@&amp;&amp;&amp;&amp;XXXXXXxxxxxXXXXXX&amp;&amp;&amp;&amp;@@@@@@@
-    @@@@@@@@@@&amp;&amp;&amp;&amp;XXXXXXXXXXXXX&amp;&amp;&amp;&amp;@@@@@@@@@
+    @@@@@@@@@@@&&&&&XXXXXXXXX&&&&&@@@@@@@@@@
+    @@@@@@@@@@&&&&XXXXXXXXXXXXX&&&&@@@@@@@@@
+    @@@@@@@@&&&&XXXXXXxxxxxXXXXXX&&&&@@@@@@@
+    @@@@@@@&&&&XXXXxxxxxxxxxxxXXXX&&&&@@@@@@
+    @@@@@@@&&&XXXxxxxxx;;;xxxxxxXXX&&&@@@@@@
+    @@@@@@&&&XXXxxxx;;;;;;;;;xxxxXXX&&&@@@@@
+    @@@@@&&&XXXxxx;;;;;;;;;;;;;xxxXXX&&&@@@@
+    @@@@@&&XXXxxx;;;;:::::::;;;;xxxXXX&&@@@@
+    @@@@&&&XXxxx;;;:::::::::::;;;xxxXX&&&@@@
+    @@@@&&XXXxx;;;::::,,,,,::::;;;xxXXX&&@@@
+    @@@&&&XXxxx;;:::,,,,,,,,,:::;;xxxXX&&&@@
+    @@@&&XXXxx;;;::,,,,...,,,,::;;;xxXXX&&@@
+    @@@&&XXXxx;;:::,,.......,,:::;;xxXXX&&@@
+    @@@&&XXxxx;;::,,,... ...,,,::;;xxxXX&&@@
+    @@@&&XXxx;;;::,,...   ...,,::;;;xxXX&&@@
+    @@@&&XXxx;;;::,,..     ..,,::;;;xxXX&&@@
+    @@@&&XXxx;;;::,,...   ...,,::;;;xxXX&&@@
+    @@@&&XXxxx;;::,,,... ...,,,::;;xxxXX&&@@
+    @@@&&XXXxx;;:::,,.......,,:::;;xxXXX&&@@
+    @@@&&XXXxx;;;::,,,,...,,,,::;;;xxXXX&&@@
+    @@@&&&XXxxx;;:::,,,,,,,,,:::;;xxxXX&&&@@
+    @@@@&&XXXxx;;;::::,,,,,::::;;;xxXXX&&@@@
+    @@@@&&&XXxxx;;;:::::::::::;;;xxxXX&&&@@@
+    @@@@@&&XXXxxx;;;;:::::::;;;;xxxXXX&&@@@@
+    @@@@@&&&XXXxxx;;;;;;;;;;;;;xxxXXX&&&@@@@
+    @@@@@@&&&XXXxxxx;;;;;;;;;xxxxXXX&&&@@@@@
+    @@@@@@@&&&XXXxxxxxx;;;xxxxxxXXX&&&@@@@@@
+    @@@@@@@&&&&XXXXxxxxxxxxxxxXXXX&&&&@@@@@@
+    @@@@@@@@&&&&XXXXXXxxxxxXXXXXX&&&&@@@@@@@
+    @@@@@@@@@@&&&&XXXXXXXXXXXXX&&&&@@@@@@@@@
 
 # Sample Inputs and Outputs
 
@@ -111,7 +111,7 @@ You are to display the given gradient on a grid with the given size, like this:
 ### Input
 
     40 30
-     .,:;xX&amp;@
+     .,:;xX&@
     radial 20 15 20
 
 ### Output
