@@ -125,20 +125,23 @@ def get_rects():
 
 def main():
     real_rects = set()
+    cnt = 0
     for rect in get_rects():
         split_rects = set()
         split_rects.add(rect)
         for existing_rect in real_rects:
-            print("%s splitting %s:" % (rect,existing_rect))
+            #print("%s splitting %s:" % (rect,existing_rect))
             new_rects = existing_rect.break_subrects(rect)
-            for prect in new_rects:
-                print("    ", prect)
+            #for prect in new_rects:
+            #    print("    ", prect)
             split_rects.update(new_rects)
         real_rects = split_rects
+        cnt += 1
+        #print(cnt, "Current rect count:",len(real_rects))
 
     colors = {}
     for rect in real_rects:
-        print(rect)
+        #print(rect)
         colors[rect.color] = colors.get(rect.color, 0) + rect.area
 
     for color, area in sorted(list(colors.items())):
