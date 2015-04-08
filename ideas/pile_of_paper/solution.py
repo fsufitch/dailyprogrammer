@@ -38,46 +38,40 @@ class Rectangle(object):
                 self.bottom >= rect.bottom)
     
     def intersect_vertical(self, col, row1, row2):
-        # 0: no intersect; 1: contained; 2: partial; 3: straddling
-        if not (col >= self.left and col <= self.right):
-            return 0
-        if ( (row1 > self.top and row1 < self.bottom) and
-             (row2 > self.top and row2 < self.bottom) ):
-            return 1
-        if ( (row1 > self.top and row1 < self.bottom) or
-             (row2 > self.top and row2 < self.bottom) ):
-            return 2
-        if (row1 <= self.top and row2 >= self.bottom):
-            return 3
-        return 0
+        if col < self.left or col > self.right:
+            return False
+        if row1 >= self.top and row1 < self.bottom:
+            return True
+        if row2 > self.top and row2 <= self.bottom:
+            return True
+        if row1 <= self.top and row2 >= self.bottom:
+            return True
+        return False
 
     def intersect_horizontal(self, col1, col2, row):
-        # 0: no intersect; 1: contained; 2: partial; 3: straddling
-        if not (row >= self.top and row <= self.bottom):
-            return 0
-        if ( (col1 > self.left and col1 < self.right) and
-             (col2 > self.left and col2 < self.right) ):
-            return 1
-        if ( (col1 > self.left and col1 < self.right) or
-             (col2 > self.left and col2 < self.right) ):
-            return 2
-        if (col1 <= self.left and col2 >= self.right):
-            return 3
-        return 0
+        if row < self.top or row > self.bottom:
+            return False
+        if col1 >= self.left and col1 < self.right:
+            return True
+        if col2 > self.left and col2 <= self.right:
+            return True
+        if col1 <= self.left and col2 >= self.right:
+            return True
+        return False
 
     def intersects(self, rect):
         return (self.intersect_vertical(rect.left, rect.top, rect.bottom) or
                 self.intersect_vertical(rect.right, rect.top, rect.bottom) or
-                self.intersect_vertical(rect.left, rect.right, rect.top) or
-                self.intersect_vertical(rect.left, rect.right, rect.bottom) )
+                self.intersect_horizontal(rect.left, rect.right, rect.top) or
+                self.intersect_horizontal(rect.left, rect.right, rect.bottom) )
+
     def break_subrects(self, rect):
         if self in rect:
-            return [] # Perfect overlap means nothing of us is left
-        
-        if not self.intersects(rect):
-            #raise Exception("No overlap between %s and %s" % (self, rect))
-            return [self]
+            return set() # Perfect overlap means nothing of us is left
 
+        if not self.intersects(rect):
+            return set([self])
+        
         #      w1   w2   w3
         #    +----+----+----+
         # h1 | 1  | 8  | 7  |
@@ -130,21 +124,30 @@ def main():
         split_rects = set()
         split_rects.add(rect)
         for existing_rect in real_rects:
-            #print("%s splitting %s:" % (rect,existing_rect))
+            print("%s splitting %s:" % (rect,existing_rect))
             new_rects = existing_rect.break_subrects(rect)
-            #for prect in new_rects:
-            #    print("    ", prect)
+            for prect in new_rects:
+                print("    ", prect)
             split_rects.update(new_rects)
         real_rects = split_rects
         cnt += 1
-        #print(cnt, "Current rect count:",len(real_rects))
+        print(cnt, "Current rect count:",len(real_rects))
 
     colors = {}
     for rect in real_rects:
-        #print(rect)
+        #print("RECT: ",rect)
         colors[rect.color] = colors.get(rect.color, 0) + rect.area
+    #print(len(real_rects), "real rects")
+
+    for rect1 in real_rects:
+        for rect2 in real_rects:
+            if rect1 is rect2: continue
+            #if rect1.intersects(rect2):
+            #    print("Intersect!", rect1, rect2)
 
     for color, area in sorted(list(colors.items())):
         print("%s %s" % (color, area))
+
+    print("Total area:", sum(colors.values()))
     
 if __name__ == '__main__': main()
