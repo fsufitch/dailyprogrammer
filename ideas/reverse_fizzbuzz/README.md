@@ -135,3 +135,9 @@ Sample 2
     blue 4
     yellow 7
 
+Notes
+-----
+
+You can find a script for generating inputs for this problem here:
+
+https://github.com/fsufitch/dailyprogrammer/blob/master/ideas/reverse_fizzbuzz/fizzbuzz_inputgen.py
