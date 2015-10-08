@@ -1,23 +1,24 @@
 # Proof of concept solution for intermediate part of:
 # https://www.reddit.com/r/dailyprogrammer_ideas/comments/3nvleu/easyintermediatehard_a_game_of_threes/
 
-import sys
+import sys, time
+from functools import lru_cache
 from math import log, ceil, floor
 from queue import PriorityQueue
 
-class AddChain(object):
-    def __init__(self, start, moves=[]):
-        self.start = start
-        self.moves = moves[:]
+class AddChainValue(object):
+    def __init__(self, current, prev_value, prev_move):
+        self.current = current
+        self.prev_value = prev_value
+        self.prev_move = prev_move
 
-        self.current = self.start
-        self.score = 0
-        for m in self.moves:
-            self.current = (self.current + m) // 3
-            self.score += 1 if m else 0
+        if prev_value:
+            self.score = prev_value.score + (0 if prev_move else 1) # increase score when the move was a 0
+        else:
+            self.score = 0
 
-    def __lt__(self, chain):
-        return self.score < chain.score
+    def __lt__(self, value):
+        return self.score < value.score
 
     def get_valid_moves(self):
         if self.current % 3 == 0:
@@ -32,34 +33,48 @@ class AddChain(object):
     def do_next_move(self, next_move):
         assert next_move in self.get_valid_moves()
         
-        return AddChain(self.start, self.moves + [next_move])
+        next_value = (self.current + next_move) // 3
+        return AddChainValue(next_value, self, next_move)
+
+    @lru_cache(maxsize=65536)
+    def get_multiple3_distance(num):
+        max_exp = floor(log(num, 3))
+        distance = 1
+        zeroes = 0
+        for exp in range(2, max_exp+1): # Look for closest multiples of 9 .. 2^maxpow, selfish
+            power = 3 ** exp
+            multiple_low = (num // power) * power
+            multiple_high = multiple_low + power
+            min_delta = min(num - multiple_low, multiple_high - num)
+            if min_delta == 0:
+                zeroes += 1
+            elif min_delta < distance:
+                distance = min_delta
+        distance = distance / (zeroes + 1)
+        return distance
 
     def get_priority(self, next_move):
         ''' XXX: This is a crapshoot. What am I even doing. '''
+        return 1
         assert next_move in self.get_valid_moves()
-        if next_move == 0:
-            return 0
+        #if next_move == 0:
+        #    return 0
 
         next_value = self.current + next_move
         if next_value == 1:
             return 0
 
-        if next_move > 1:  # Moving up, check distance to next highest power of 3
-            next_power = ceil(log(next_value))
+        best_priority = AddChainValue.get_multiple3_distance(next_value)
+
+        return best_priority * self.score
+
+    def display(self, move_to_display):
+        if self.prev_value:
+            self.prev_value.display(self.prev_move)
+        if move_to_display is not None:
+            print("%s %s" % (self.current, move_to_display))
         else:
-            next_power = floor(log(next_value))
-        
-        delta = abs(log(next_value) - next_power) # 0.0 .. 1.0
-
-        priority = delta * self.score # weight it by how much we've scored so far
-        return priority
-
-    def display(self):
-        x = self.start
-        for m in self.moves:
-            print("%s %s" % (x, m))
-            x = (x + m) // 3
-        print(self.current)
+            print(self.current)
         
 
 if len(sys.argv) > 1:
@@ -67,16 +82,34 @@ if len(sys.argv) > 1:
 else:
     N = int(input("N? "))
 
-chain_queue = PriorityQueue()
 
-start_chain = AddChain(N, [])
+start_chain = AddChainValue(N, None, None)
 chain_queue.put( (0, start_chain) )
+
+known_best_scores = {}
+best_solution = None
+
+tick = time.time()
 
 while not chain_queue.empty():
     _, chain = chain_queue.get()
     if chain.current == 1:
-        chain.display()
-        break
+        print(chain.score)
+        if (not best_solution) or (best_solution.score < chain.score):
+            best_solution = chain
+        continue
+
+    if time.time() - tick > 1:
+        print("... Queue size: %s; Current: %s" % (chain_queue.qsize(), chain.current))
+        tick = time.time()
+
+    if chain.current not in known_best_scores:
+        known_best_scores[chain.current] = chain.score
+    else:
+        if known_best_scores[chain.current] < chain.score:
+            known_best_scores[chain.current] = chain.score
+        else:
+            continue
 
     next_moves = chain.get_valid_moves()
     for move in next_moves:
@@ -84,6 +117,10 @@ while not chain_queue.empty():
         next_chain = chain.do_next_move(move)
         chain_queue.put( (p, next_chain) )
         
+
+if best_solution:
+    best_solution.display(None)
+    print(best_solution.score)
 else:
     print("Impossible.")
     
