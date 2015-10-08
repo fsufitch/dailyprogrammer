@@ -49,7 +49,7 @@ while to_process:
             "value": (step["value"] + move) // 3,
             "from": step,
             "move": move,
-            "score": step["score"] + (1 if move == 0 else 0)
+            "score": step["score"] + (-1 if move != 0 else 0)
         }
         to_process.append(next_step)
 
