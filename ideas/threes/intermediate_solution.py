@@ -1,6 +1,7 @@
 # Proof of concept solution for intermediate part of:
 # https://www.reddit.com/r/dailyprogrammer_ideas/comments/3nvleu/easyintermediatehard_a_game_of_threes/
 
+import sys
 from math import log, ceil, floor
 from queue import PriorityQueue
 
@@ -61,7 +62,10 @@ class AddChain(object):
         print(self.current)
         
 
-N = int(input("N? "))
+if len(sys.argv) > 1:
+    N  = int(sys.argv[1])
+else:
+    N = int(input("N? "))
 
 chain_queue = PriorityQueue()
 
