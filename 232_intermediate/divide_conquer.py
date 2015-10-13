@@ -1,4 +1,4 @@
-import functools, re, sys
+import re, sys
 
 def read_points():
     points = []
@@ -18,13 +18,13 @@ def read_points():
 
     return points
 
-@functools.lru_cache(maxsize=65536)
 def dist(pt1, pt2):
     x1, y1 = pt1
     x2, y2 = pt2
     dx = x1 - x2
     dy = y1 - y2
-    return dx * dx + dy * dy
+    d = dx * dx + dy * dy
+    return d
 
 def calculate_min_center(points, left_index, right_index, max_dist):
     # Calculate min distance for points up to max_dist away from middle point
