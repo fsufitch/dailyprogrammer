@@ -6,7 +6,7 @@ def read_points():
     if len(sys.argv) > 1:
         f = open(sys.argv[1])
     count = int(f.readline().strip())
-    reg = re.compile('\(([\.\dE-]+),\s*([\.\dE-]+)\)')
+    reg = re.compile('\(?([\.\dE-]+),?\s*([\.\dE-]+)\)?')
     for i in range(count):
         line = f.readline()
         x, y = reg.search(line).groups()
