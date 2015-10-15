@@ -1,4 +1,4 @@
-import random, sys
+import argparse, random, sys
 
 A_TO_Z = [chr(x) for x in range(ord('a'), ord('z')+1)]
 
@@ -9,7 +9,6 @@ class DictionaryTree(object):
             self.add_word(word)
 
     def add_word(self, word):
-        assert word.isalpha()
         node = self.tree
         for char in word.lower():
             if char not in node:
@@ -140,6 +139,22 @@ def word_finder(text, dict_tree=None):
         if (not dict_tree) or (word in dict_tree):
             yield word_start, word
 
+############# ENCODING CODE #################
+
+def fix_container(container, dict_tree):
+    """ There should be no misspelled words with a single correction in the container! """
+    words_container = list(word_finder(container))
+    fixed_container = container[:]
+    for word_start, word in words_container:
+        #print(word, "in dict_tree:", word in dict_tree)
+        if word in dict_tree:
+            continue
+        fixes = dict_tree.fix(word)
+        if not fixes or len(fixes) != 1:
+            continue
+        fixed_container = fixed_container[:word_start] + fixes[0] + fixed_container[word_start+len(word):]
+    return fixed_container
+
 def garble_message(container, message, dict_tree):
     words_container = filter(lambda w: dict_tree.supports_all_tribits(w[1]),
                              word_finder(container, dict_tree))
@@ -169,7 +184,7 @@ def garble_message(container, message, dict_tree):
         garbled_container = garbled_container[:word_start] + new_word + garbled_container[word_end:]
     return garbled_container
 
-####
+############# DECODING CODE #################
 
 def diff_letters(word1, word2):
     assert len(word1) == len(word2)
@@ -189,12 +204,13 @@ def ungarble_message(text, dict_tree):
             continue # word spelled correctly, nothing to do
 
         fixed_words = dict_tree.fix(word)
-        if not fixed_words:
+        if (not fixed_words) or (len(fixed_words) > 1) :
             continue # word super misspelled, don't worry about it
 
         fixed_word = fixed_words[0]
-        #print(word, '->', fixed_word)
         fixed_text = text[:word_start] + fixed_word + text[word_start+len(word):]
+
+        #print(word, word in dict_tree, fixed_word, fixed_word in dict_tree)
         
         diff = diff_letters(word, fixed_word)
         index, char1, char2 = diff[0]
@@ -207,42 +223,46 @@ def ungarble_message(text, dict_tree):
     message = from_tribits(tribits)
     return message
 
-###
-
-def encode():
-    container_file, message_file, dict_file = sys.argv[2:5]
-    container = open(container_file).read()
-    message = open(message_file).read()
-
-    dt = DictionaryTree([])
-    with open(dict_file) as f:
-        for line in f:
-            if line.strip().isalpha():
-                dt.add_word(line.strip().lower())
-
-    garbled = garble_message(container, message, dt)
-    print(garbled)
-
-def decode():
-    message_file, dict_file = sys.argv[2:4]
-    message = open(message_file).read()
-    
-    dt = DictionaryTree([])
-    with open(dict_file) as f:
-        for line in f:
-            if line.strip().isalpha():
-                dt.add_word(line.strip().lower())
-    
-    decoded = ungarble_message(message, dt)
-    print(decoded)
+############# MAIN RUN CODE ###############
 
 def main():
-    if sys.argv[1] == 'encode':
-        encode()
-    elif sys.argv[1] == 'decode':
-        decode()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('action', choices=['encode', 'decode'])
+    parser.add_argument('text', metavar="TXT_FILE",
+                        help="file to be used as a carrier (for encoding) or as a source (for decoding)")
+    parser.add_argument('-w', '--words', metavar="WORDS_TXT", default="/usr/share/dict/words",
+                        help="path to words/dictionary file to use (default: /usr/share/dict/words)")
+
+    source_group = parser.add_mutually_exclusive_group()
+    source_group.add_argument('-m', '--message', metavar="MESSAGE", default=None,
+                        help="use a text message instead of STDIN for encoding data")
+    source_group.add_argument('-f', '--file', metavar="MESSAGE_TXT", default=None,
+                              help="use a file instead of STDIN for encoding data")
+    
+    args = parser.parse_args()
+
+    with open(args.text) as f:
+        main_data = f.read()
+
+    with open(args.words) as f:
+        words = f.read().split()
+    dt = DictionaryTree(words)
+
+    if args.action == 'encode':
+        encode_data = args.message
+        if args.file:
+            with open(args.file) as f:
+                encode_data = f.read()
+        if not encode_data:
+            encode_data = sys.stdin.read()
+        
+        container = fix_container(main_data, dt)
+        encoded = garble_message(container, encode_data, dt)
+        sys.stdout.write(encoded)
+        sys.stdout.flush()
     else:
-        print("Specify 'encode' or 'decode'")
+        decoded = ungarble_message(main_data, dt)
+        print(decoded)
 
 if __name__ == '__main__':
     main()
