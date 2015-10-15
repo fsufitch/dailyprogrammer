@@ -1,4 +1,4 @@
-import argparse, random, sys
+import argparse, functools, random, sys
 
 A_TO_Z = [chr(x) for x in range(ord('a'), ord('z')+1)]
 
@@ -56,6 +56,7 @@ class DictionaryTree(object):
             return results
         return None
 
+    @functools.lru_cache(maxsize=32768)
     def is_unique_misspellable(self, word):
         """ If at least one letter can be changed such that there is only one fix for the word """
         for i in range(len(word)):
@@ -72,6 +73,7 @@ class DictionaryTree(object):
         return False
 
     
+    @functools.lru_cache(maxsize=32768)
     def misspell_fixably(self, word):
         possible_misspells = set()
         for i in range(0, len(word)):
@@ -100,6 +102,7 @@ class DictionaryTree(object):
             
         return random.choice(possible_garbles) if possible_garbles else None
         
+    @functools.lru_cache(maxsize=32768)
     def supports_all_tribits(self, word):
         for tribit in range(1, 0b111+1):
             if not self.garble_tribit(word, tribit):
