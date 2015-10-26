@@ -20,6 +20,7 @@ func genLetter(r rune, consonants []rune, vowels []rune) (output string) {
 	if unicode.IsUpper(r) {
 		output = strings.ToUpper(output)
 	}
+	if len(output) < 1 { panic( fmt.Sprintf("invalid character: %s", string(r)) ) }
 	return
 }
 
