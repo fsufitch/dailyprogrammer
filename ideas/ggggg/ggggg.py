@@ -1,3 +1,23 @@
+# Usage:
+#     
+# Encode (non-compressed):
+#   python3 ggggg.py encode <inputfile>
+#     *OR*
+#   <command with output> | python3 ggggg.py encode
+#     
+# Encode (Huffman-compressed):
+#   python3 ggggg.py hencode <inputfile>
+#     *OR*
+#   <command with output> | python3 ggggg.py hencode
+#     
+# Decode:
+#   python3 ggggg.py decode <inputfile>
+#     *OR*
+#   <command with output> | python3 ggggg.py decode
+#
+# All in one:
+#   python3 ggggg.py encode <inputfile> | python3 ggggg.py decode | python3 ggggg.py hencode | python3 ggggg.py decode
+
 import math, queue, string, sys
 
 LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
