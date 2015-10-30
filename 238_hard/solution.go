@@ -85,9 +85,10 @@ func (d *Dungeon) IsGoal(floor int, row int, col int) bool {
 }
 
 func (d *Dungeon) DistanceToGoal(floor int, row int, col int) float64 {
-	df := d.EndFloor - floor 
-	dr := d.EndRow - row
-	dc := d.EndCol - col
+	df := float64(d.EndFloor - floor) * 0.5 * math.Max(float64(len(d.FloorMap[0])), float64(len(d.FloorMap[0][0])))
+	// Hack, make the floors half as tall as the map is wide, to help with inter-floor transit
+	dr := float64(d.EndRow - row)
+	dc := float64(d.EndCol - col)
 	return math.Sqrt(float64(df*df + dr*dr + dc*dc))
 }
 
@@ -102,11 +103,6 @@ type SearchNode struct {
 
 func (n *SearchNode) heuristic() float64 {
 	return float64(n.DistSoFar) + n.Dungeon.DistanceToGoal(n.CurrFloor, n.CurrRow, n.CurrCol)
-}
-
-func (n *SearchNode) IsBacktracking(tip *SearchNode) bool {
-	return ((n.CurrFloor == tip.CurrFloor && n.CurrRow == tip.CurrRow && n.CurrCol == tip.CurrCol) ||
-		(n.PrevNode != nil && n.PrevNode.IsBacktracking(tip)))
 }
 
 type SearchHeap []*SearchNode 
@@ -148,15 +144,31 @@ func AStar(dungeon *Dungeon) []*SearchNode {
 	heap.Init(&nodeHeap)
 
 	node := &SearchNode{}
+	minDistToPoint := [][][]int{}
+	for f := range dungeon.FloorMap {
+		minDistToPoint = append(minDistToPoint, [][]int{})
+		for r := range dungeon.FloorMap[f] {
+			minDistToPoint[f] = append(minDistToPoint[f], []int{})
+			for _ = range dungeon.FloorMap[f][r] {
+				minDistToPoint[f][r] = append(minDistToPoint[f][r], -1)
+			}
+		}
+	}
 	
 	for len(nodeHeap) > 0 {
 		node = heap.Pop(&nodeHeap).(*SearchNode)
-		if node.PrevNode != nil && node.PrevNode.IsBacktracking(node) { continue }
-
 		if dungeon.IsGoal(node.CurrFloor, node.CurrRow, node.CurrCol) {
 			break  // Yay!
 		}
-		
+
+		// Don't visit it multiple times unless it's actually better
+		if (minDistToPoint[node.CurrFloor][node.CurrRow][node.CurrCol] > -1 &&
+			minDistToPoint[node.CurrFloor][node.CurrRow][node.CurrCol] <= node.DistSoFar) {
+			continue
+		}
+		minDistToPoint[node.CurrFloor][node.CurrRow][node.CurrCol] = node.DistSoFar
+
+		// Push next moves
 		if dungeon.IsClear(node.CurrFloor, node.CurrRow-1, node.CurrCol) { // Go up
 			heap.Push(&nodeHeap, &SearchNode{dungeon, node.CurrFloor, node.CurrRow-1, node.CurrCol, node.DistSoFar+1, node})
 		}
