@@ -1,0 +1,13 @@
+apple 59
+banana 32
+coconut 155
+grapefruit 128
+jackfruit 1100
+kiwi 41
+lemon 70
+mango 97
+orange 73
+papaya 254
+pear 37
+pineapple 399
+watermelon 500
