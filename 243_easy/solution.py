@@ -1,0 +1,1 @@
+print(*["%s "%n + {0:lambda x:'perfect', 1:lambda x:'abundant by %s'%x, -1:lambda x:'deficient'}[(lambda n: 0 if not n else n//abs(n))(r)](r) for n, r in [(lambda n: (n, (sum([x for x in range(1, int(n**.5)+1) if n%x==0] + [n//x for x in range(1, int(n**.5)+1) if n%x==0])-2*n)))(int(l.strip())) for l in __import__('sys').stdin]], sep="\n")
