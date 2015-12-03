@@ -22,6 +22,7 @@ function nextFruit() {
     if ($solution["sum"] == $GLOBALS["MONEY"]) echo implode(", ", $solution["choices"]) . "\n";
     if ($solution["sum"] >= $GLOBALS["MONEY"]) unset($GLOBALS["solutions"][$i]);
   }
+  echo count($GLOBALS["solutions"]) . "\n";
   nextFruit();
 }
 nextFruit();
