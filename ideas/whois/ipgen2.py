@@ -39,15 +39,19 @@ def netmask_int(bits):
     return (2**bits-1) << (32-bits)
 
 names = gen_names()
+unique_ranges = set()
 
 for cluster in range(int(sys.argv[1])):
     base_ip = make_ip(ipaddress.ip_network("0.0.0.0/0"))
-    masks = list(range(30))
+    masks = list(range(29))
     for masksize in range(int(sys.argv[2])):
         masksize = random.choice(masks)
         net_ip = ipaddress.ip_address(int(base_ip) & netmask_int(masksize))
         net = ipaddress.ip_network(net_ip.compressed + "/" + str(masksize))
         ip1, ip2 = make_ip_range(net)
+        while (int(ip1), int(ip2)) in unique_ranges:
+            ip1, ip2 = make_ip_range(net)
+        unique_ranges.add( (int(ip1), int(ip2)) )
         name = next(names)
         print(ip1.compressed, ip2.compressed, name)
         
