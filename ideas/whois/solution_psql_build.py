@@ -34,7 +34,7 @@ def group(num, iterator):
 
 print("Creating iterator...")
 
-N = 500
+N = 1000
 total = 0
 groups = group(N, read_ranges(infile))
 
@@ -46,5 +46,5 @@ for g in groups:
     print("Done. Total: %d" % total)
 
 print("Committing...")
-curs.commit()
+conn.commit()
 print("Done.")
