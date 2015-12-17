@@ -15,3 +15,9 @@ an year ago
 1 month from 2016-01-31
 4 DAYS FROM today
 9 weeks from yesterday
+Jan 1, 1970
+1 day after feb 28, 2003
+1 day after feb 28, 2004
+1 day after feb 28, 2005
+1 day to mar 1, 1900
+5/10/2012
