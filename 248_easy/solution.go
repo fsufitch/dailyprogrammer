@@ -113,7 +113,9 @@ func (cmd *DrawLine) Draw(img *Image) {
 		(*img)[row][currCol] = cmd.p
 		
 		exactCol := slope * float64(row - cmd.row1) + float64(cmd.col1)
-		currCol += colInc
+		if math.Abs(exactCol - float64(currCol)) < 0.5 {
+			currCol += colInc
+		}
 		for math.Abs(exactCol - float64(currCol)) < 0.5 {
 			(*img)[row][currCol] = cmd.p
 			currCol += colInc
