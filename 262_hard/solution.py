@@ -66,7 +66,6 @@ def solve(grid):
     heapq.heappush(state_heap, GridState(grid, None, 0))
     while len(state_heap):
         state = heapq.heappop(state_heap)
-        print(len(state_heap), len(known_states), state.solution_distance())
         if int(state.solution_distance()) == 0: # done!
             return state
 
