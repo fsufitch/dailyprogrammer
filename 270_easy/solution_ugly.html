@@ -1,0 +1,12 @@
+<html><body><script>
+"use strict";document.write('<textarea rows="30" cols="80" id="input"></textarea><hr/><pre id="output"></pre>');
+var input=document.getElementById("input"),output=document.getElementById("output");
+input.style.fontFamily="monospace",input.onchange=function(){var a=[],b=[],c=0;input
+.value=input.value.trim()+"\n";var d=!0,e=!1,f=void 0;try{for(var h,g=input.value[Symbol
+.iterator]();!(d=(h=g.next()).done);d=!0){var i=h.value;switch(i){case"\n":a.push(b),
+c=c<b.length?b.length:c,b=[];break;default:b.push(i)}}}catch(j){e=!0,f=j}finally{try{
+!d&&g["return"]&&g["return"]()}finally{if(e)throw f}}output.innerHTML="",console.log(a);
+for(var k=0;c>k;k++){var l=!0,m=!1,n=void 0;try{for(var p,o=a[Symbol.iterator]();!(l=
+(p=o.next()).done);l=!0){var q=p.value;output.innerHTML+=q[k]||" "}}catch(j){m=!0,n=j}
+finally{try{!l&&o["return"]&&o["return"]()}finally{if(m)throw n}}output.innerHTML+="\n"}};
+</script></body></html>
