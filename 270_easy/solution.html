@@ -1,0 +1,33 @@
+<html>
+<body>
+  <script>
+  document.write('<textarea rows="30" cols="80" id="input"></textarea><hr/><pre id="output"></pre>');
+  var input = document.getElementById('input');
+  var output = document.getElementById('output');
+  input.style.fontFamily = 'monospace';
+  input.onchange = function() {
+    let m = [], c = [], l = 0;
+    input.value = input.value.trim() + '\n';
+    for (var x of input.value) {
+      switch (x) {
+        case "\n":
+          m.push(c);
+          l = (l < c.length) ? c.length : l;
+          c = []
+          break;
+        default:
+          c.push(x);
+      }
+    }
+    output.innerHTML = '';
+    console.log(m);
+    for (var r=0; r<l; r++) {
+      for (var c of m) {
+        output.innerHTML += c[r] || ' ';
+      }
+      output.innerHTML += '\n';
+    }
+  }
+  </script>
+</body>
+</html>
