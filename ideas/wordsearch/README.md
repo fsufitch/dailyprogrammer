@@ -96,4 +96,4 @@ Solutions may not be unique. Another valid solution for this input would be:
 
 ## Challenge input 2 (big)
 
-Use this 2000x2000 grid here: <link>
+Use this 2000x2000 grid here: https://github.com/fsufitch/dailyprogrammer/raw/master/ideas/wordsearch/big.txt
