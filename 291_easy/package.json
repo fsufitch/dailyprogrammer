@@ -1,0 +1,15 @@
+{
+  "name": "291_easy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "goldilocks.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^6.0.46",
+    "rxjs": "^5.0.0-rc.2"
+  }
+}
